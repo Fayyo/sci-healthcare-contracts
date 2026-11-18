@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Added
+- **docs:** security audit scope and preparation document at `docs/developers/audit-scope.md` — contracts and commit in scope, trust assumptions, invariants (each linked to its test), known limitations, and out-of-scope items. Closes #281.
+- **docs:** printable one-page clinic onboarding sheet at `docs/guides/clinic-onboarding-sheet.html` — register, list services, claim, get paid, contacts, with QR code placeholder; prints on a single A4 page in black and white. Closes #283.
+- **docs:** worked examples for attesters handling disputes at `docs/guides/attester-dispute-examples.md` — five cases (clear, borderline, fraudulent, clinic error, funder error) with evidence that decided each. Closes #284.
+- **example:** Python lifecycle script at `examples/python/lifecycle.py` with pinned `requirements.txt` — runs fund → claim → attest → settle on testnet from a clean virtualenv, no secret key written to disk. Closes #287.
+
 ### Changed
 - **registry:** `register_provider` now accepts a country only in the shape of an ISO 3166-1 alpha-2 code: exactly two ASCII uppercase letters. `ng`, `N1`, two spaces and multi-byte characters that happen to occupy two bytes are refused with the existing `InvalidCountry`, so `ng` and `NG` can no longer register as two different countries and junk codes cannot break the app's or indexer's country filter. Checking a code against the full ISO list stays an off-chain concern. Closes #23.
 - **registry:** `set_provider_status` rejects status changes that carry no information. Only `Pending → Active`, `Pending → Suspended`, `Active → Suspended` and `Suspended → Active` are accepted; everything else — setting the same status twice, the backwards `Active → Pending`, and any move into or out of `Retired` — fails with the new `InvalidTransition` (#14), so the event history the indexer and auditors read contains no no-op or unexplained entries. See the [status lifecycle](docs/developers/contracts.md#status-lifecycle) for the full transition table. Closes #25.
